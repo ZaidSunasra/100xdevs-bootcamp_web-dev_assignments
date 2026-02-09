@@ -6,6 +6,29 @@
 // If the second attempt also rejects, the error should be propagated.
 
 
-function retryOnce(fn) {}
+function retryOnce(fn) {
+
+    return function(cb) {
+        let tried = false;
+
+        function attempt(){
+            fn((err) => {
+                if(!err){
+                    cb(null, "success")
+                    return;
+                }
+
+                if(!tried){
+                    tried = true;
+                    attempt()
+                } else {
+                    cb("error", null)
+                }
+
+            })
+        }
+        attempt()
+    }
+}
 
 module.exports = retryOnce;

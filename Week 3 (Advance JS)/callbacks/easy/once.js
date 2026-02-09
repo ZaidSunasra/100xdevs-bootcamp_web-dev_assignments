@@ -6,6 +6,38 @@
 // Any subsequent calls should not re-execute `fn` and should instead invoke
 // the callback with the same result (or error) from the first invocation.
 
-function once(fn) {}
+function once(fn) {
+    let started = false;
+    let finished = false;
+    let result;
+    let error;
+    let callbacks = [];
+
+    return function (...args) {
+        const cb = args[args.length - 1]; 
+
+        if (finished) {
+            cb(error, result);
+            return;
+        }
+
+        callbacks.push(cb);
+
+        if (started) return;
+
+        started = true;
+
+        const fnArgs = args.slice(0, -1);
+
+        fn(...fnArgs, (err, data) => {
+            error = err;
+            result = data;
+            finished = true;
+
+            callbacks.forEach(cb => cb(error, result));
+            callbacks = [];
+        });
+    };
+}
 
 module.exports = once;
