@@ -9,7 +9,6 @@
 //
 // If a cached value is close to expiry, return the current value
 // but trigger a background refresh for future requests.
-
 class Cache {
   constructor(ttl) {}
 

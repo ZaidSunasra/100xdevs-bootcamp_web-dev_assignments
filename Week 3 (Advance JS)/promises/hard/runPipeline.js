@@ -8,7 +8,7 @@
 // 1. Execution must stop immediately
 // 2. Any pending async operation should be aborted
 // 3. The pipeline must throw an AbortError
-
+//
 async function runPipeline(fns, signal) {}
 
 module.exports = runPipeline;
