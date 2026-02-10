@@ -9,6 +9,25 @@
 // If any of the asynchronous functions reject, the returned promise
 // should immediately reject with that error.
 
-async function runParallel(functions) {}
+async function runParallel(functions) {
+
+    return new Promise((resolve, reject) => {
+        let results = []
+        let completedCount = 0
+
+        functions.forEach((func, index) => {
+            Promise.resolve(func()).then((val) => {
+                results[index] = val
+                completedCount++
+                if (completedCount == functions.length) {
+                    resolve(results)
+                }
+            }).catch((err) => {
+
+                reject(err)
+            })
+        })
+    })
+}
 
 module.exports = runParallel;
