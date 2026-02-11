@@ -10,13 +10,39 @@
 // they complete.
 
 class GuardedAPI {
-  constructor() {}
+  constructor() {
+    this.queue = [];
+    this.begin= false
+  }
 
-  init(initTask) {}
+  init(initTask) {
+    initTask((err) => {
+      if(!err){
+        this.begin = true;
+        this._flush();
+      }
+    })
+  }
 
-  call(apiFn, onComplete) {}
+  call(apiFn, onComplete) {
+    if(!this.begin) {
+      this.queue.push([apiFn, onComplete])
+      return
+    }
+    apiFn((err, result) => {
+      if(err){
+       return onComplete(err, null)
+      }
+      return onComplete(null, result)
+    })
+  }
 
-  _flush() {}
+  _flush() {
+    while(this.queue.length > 0){
+      const [api, onComplete] = this.queue.shift();
+      this.call(api, onComplete)
+    }
+  }
 }
 
 module.exports = GuardedAPI;

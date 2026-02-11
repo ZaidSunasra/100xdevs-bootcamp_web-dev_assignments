@@ -11,6 +11,31 @@
 // Invoke finalCallback after all tasks have completed, or with an error
 // if any task fails.
 
-function runWithDependencies(tasks, finalCallback) {}
+function runWithDependencies(tasks, finalCallback) {
+    let completed = new Set();
+    let running = new Set()
+    let results = {};
+
+    function runTask() {
+        if (completed.size == tasks.length) {
+            return finalCallback(null, results)
+        };
+        for (const task of tasks) {
+            if (!completed.has(task.id) && task.deps.every(dep => completed.has(dep)) && !running.has(task.id)) {
+                running.add(task.id)
+                task.run((err, result) => {
+                    if (err) {
+                        return finalCallback(err)
+                    }
+                    running.delete(task.id)
+                    completed.add(task.id)
+                    results[task.id] = result
+                    runTask()
+                })
+            }
+        }
+    }
+    runTask();
+}
 
 module.exports = runWithDependencies;

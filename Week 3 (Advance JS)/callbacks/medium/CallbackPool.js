@@ -8,11 +8,40 @@
 // Each task must invoke its callback with its result when finished.
 
 class CallbackPool {
-  constructor(limit) {}
 
-  run(task, onComplete) {}
+  constructor(limit) {
+    this.limit = limit
+    this.runningTask = 0
+    this.queue = []
+  }
 
-  _next() {}
+  run(task, onComplete) {
+    if (this.runningTask >= this.limit) {
+      this.queue.push([task, onComplete])
+      return;
+    }
+
+    this.runningTask++;
+
+    task((err, result) => {
+      this.runningTask--;
+
+      if (err) {
+        this._next();
+        return onComplete(err)
+      }
+
+      onComplete(null, result)
+      this._next()
+    })
+  }
+
+  _next() {
+    if (this.queue.length == 0) return;
+
+    const [task, onComplete] = this.queue.shift()
+    this.run(task, onComplete)
+  }
 }
 
 module.exports = CallbackPool;
