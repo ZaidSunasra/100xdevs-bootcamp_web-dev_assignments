@@ -14,9 +14,7 @@ function withTimeoutPromise(promise, ms) {
             reject(new Error("Request Timed Out"))
         }, ms)
     })
-
     const promiseResolve = Promise.resolve().then(() => promise)
-
     return Promise.race([timeOut, promiseResolve])
 }
 

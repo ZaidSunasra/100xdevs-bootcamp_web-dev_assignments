@@ -12,26 +12,19 @@ function once(fn) {
     let result;
     let error;
     let callbacks = [];
-
     return function (...args) {
         const cb = args.pop(); 
-
         if (finished) {
             cb(error, result);
             return;
         }
-
         callbacks.push(cb);
-
         if (started) return;
-
         started = true;
-
         fn(...args, (err, data) => {
             error = err;
             result = data;
             finished = true;
-
             callbacks.forEach(cb => cb(error, result));
             callbacks = [];
         });

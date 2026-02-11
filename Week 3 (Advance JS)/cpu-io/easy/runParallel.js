@@ -14,7 +14,6 @@ async function runParallel(functions) {
     return new Promise((resolve, reject) => {
         let results = []
         let completedCount = 0
-
         functions.forEach((func, index) => {
             Promise.resolve(func()).then((val) => {
                 results[index] = val
@@ -23,7 +22,6 @@ async function runParallel(functions) {
                     resolve(results)
                 }
             }).catch((err) => {
-
                 reject(err)
             })
         })

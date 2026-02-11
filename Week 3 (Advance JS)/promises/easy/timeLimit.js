@@ -12,7 +12,6 @@ function timeLimit(fn, t) {
                 reject("Time Limit Exceeded");
             }, t);
         });
-
         return Promise.race([taskPromise, timeoutPromise]);
     };
 }
