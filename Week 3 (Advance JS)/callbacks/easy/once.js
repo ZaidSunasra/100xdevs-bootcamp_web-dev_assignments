@@ -14,7 +14,7 @@ function once(fn) {
     let callbacks = [];
 
     return function (...args) {
-        const cb = args[args.length - 1]; 
+        const cb = args.pop(); 
 
         if (finished) {
             cb(error, result);
@@ -27,9 +27,7 @@ function once(fn) {
 
         started = true;
 
-        const fnArgs = args.slice(0, -1);
-
-        fn(...fnArgs, (err, data) => {
+        fn(...args, (err, data) => {
             error = err;
             result = data;
             finished = true;
