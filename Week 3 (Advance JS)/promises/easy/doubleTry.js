@@ -9,7 +9,9 @@
 // // If the second attempt fails, reject with the error.
 
 async function doubleTry(fn) {
-
+    return fn().catch(() => {
+        return fn()
+    })
 }
 
 module.exports = doubleTry;
