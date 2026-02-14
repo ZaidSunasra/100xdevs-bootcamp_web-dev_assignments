@@ -4,6 +4,15 @@
 // Your task is to implement a strategy that performs this processing without blocking the main thread, ensuring the browser UI remains responsive. 
 // The solution should break the work into smaller chunks and schedule them asynchronously.
 
-async function processLargeArray(items, processFn) {}
+async function processLargeArray(items, processFn) {
+
+    const chunkSize = 10000
+    for(let i=0; i<items.length; i++){
+        if( i % chunkSize == 0){
+            await new Promise((resolve) => {setTimeout(resolve, 0)})
+        }
+        processFn(items[i])
+    }
+}
 
 module.exports = processLargeArray;

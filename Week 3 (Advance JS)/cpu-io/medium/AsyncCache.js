@@ -6,9 +6,22 @@
 // store it in the cache, and automatically remove the entry after a fixed Time-to-Live (TTL) of 5 seconds.
 
 class AsyncCache {
-  constructor(ttl = 5000) {}
+  constructor(ttl = 5000) {
+    this.ttl = ttl;
+    this.cache = {}
+  }
 
-  async get(key, fetcher) {}
+  async get(key, fetcher) {
+    if (key in this.cache) {
+      return this.cache[key]
+    }
+    const data = await fetcher();
+    this.cache[key] = data;
+    setTimeout(() => {
+      delete this.cache[key]
+    }, this.ttl)
+    return data;
+  }
 }
 
 module.exports = AsyncCache;
