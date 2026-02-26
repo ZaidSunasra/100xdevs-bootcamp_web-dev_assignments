@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Flashcard App</title>
+  </head>
+  <body
+    class="font-mono flex flex-col items-center h-screen w-screen space-y-4 p-4 max-w-7xl m-auto"
+  >
+    <h1 class="text-center font-extrabold text-5xl mb-8">FlipSnap</h1>
+    <div class="flex flex-col md:flex-row gap-4 w-full mb-8">
+      <input
+        id="number-of-question"
+        type="number"
+        placeholder="Enter number of question (Max 10 qtns)"
+        min="1"
+        max="10"
+        class="w-full md:w-55/100 lg:w-2/5 border rounded px-4 py-2 focus:outline-none"
+      />
+      <select name="topics" id="topics" class="px-4 py-2 border rounded w-full md:w-1/4 lg:w-2/5 focus:outline-none">
+        <option value="">Select a topic</option>
+        <option value="capitals">Capitals</option>
+        <option value="flags">Flags</option>
+      </select>
+      <button
+        id="start"
+        class="bg-blue-500 px-4 py-2 rounded font-semibold w-full md:w-1/5"
+      >
+        Submit
+      </button>
+    </div>
+    <div id="flashcard-area" class="w-full"></div>
+  </body>
+  <script type="module" src="index.js"></script>
+</html>
